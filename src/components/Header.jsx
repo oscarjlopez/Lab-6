@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "@asgardeo/auth-react"; // Import useAuthContext for login/logout functionality
 import { useTitle } from "../context/TitleContext"; // Import context
 
 const pages = ["Home", "EmployeeManagement"];
@@ -20,6 +21,7 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
     const { title } = useTitle(); // Get title from context
+    const { state, signIn, signOut } = useAuthContext(); // Access auth context for signIn and signOut
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -101,6 +103,17 @@ function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Box>
+
+                    {/* Login/Logout Button */}
+                    {state.isAuthenticated ? (
+                        <Button onClick={() => signOut()} sx={{ color: "white" }}>
+                            Logout
+                        </Button>
+                    ) : (
+                        <Button onClick={() => signIn()} sx={{ color: "white" }}>
+                            Login
+                        </Button>
+                    )}
 
                     {/* User Avatar & Menu */}
                     <Box sx={{ flexGrow: 0 }}>
