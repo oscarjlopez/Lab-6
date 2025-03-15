@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useEffect } from "react";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { TitleProvider } from "../context/TitleContext"; 
 import ResponsiveAppBar from "../components/Header"; 
@@ -8,20 +8,28 @@ import EmployeeManagementTable from "../components/EmployeeManagementTable";
 const EmployeeManagement = () => {
     const { state, signIn, signOut } = useAuthContext();
 
+    // Use useEffect to handle sign-in state change
+    useEffect(() => {
+        if (state.isAuthenticated) {
+            // Do something after authentication (if needed, like redirect)
+        }
+    }, [state.isAuthenticated]); // Dependency on isAuthenticated to trigger re-render
+
     return (
-        <TitleProvider> 
-            <ResponsiveAppBar /> 
+        <TitleProvider>
+            <ResponsiveAppBar />
             
             <div style={styles.container}>
                 {state.isAuthenticated ? (
-                    // Only show the EmployeeManagementTable if the user is authenticated
+                    // Render the table if authenticated
                     <EmployeeManagementTable />
                 ) : (
+                    // Show login prompt if not authenticated
                     <div style={styles.loginMessageContainer}>
-                        <h2 style={styles.loginMessage}>You must be logged in to view this page.</h2>
-                        <button onClick={() => signIn()} style={styles.loginButton}>
-                            Login
-                        </button>
+                        <h2 style={styles.loginMessage}>
+                            You must be logged in to view this page.
+                        </h2>
+                        <button onClick={ () => signIn() }>Login</button>
                     </div>
                 )}
             </div>
@@ -37,21 +45,6 @@ const styles = {
         textAlign: "center",
         margin: "40px 0",
         padding: "20px",
-    },
-    welcomeMessage: {
-        fontSize: "24px",
-        color: "#4CAF50",
-        fontWeight: "bold",
-    },
-    logoutButton: {
-        padding: "10px 20px",
-        fontSize: "16px",
-        backgroundColor: "#f44336",
-        color: "white",
-        border: "none",
-        borderRadius: "5px",
-        cursor: "pointer",
-        marginTop: "20px",
     },
     loginMessageContainer: {
         display: "flex",
@@ -72,7 +65,7 @@ const styles = {
     loginButton: {
         padding: "12px 24px",
         fontSize: "16px",
-        backgroundColor: "#cc5500",  // Burnt orange color
+        backgroundColor: "#cc5500", // Burnt orange color
         color: "white",
         border: "none",
         borderRadius: "5px",

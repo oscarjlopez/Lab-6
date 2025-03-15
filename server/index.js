@@ -3,14 +3,22 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mysql from "mysql2";
 
-// Initialize the app and the environment variables
+// Load environment variables
 dotenv.config();
-const app = express();
-const port = 3001;
 
-// Enable CORS for all routes (use it with caution in production)
-app.use(cors());
-app.use(express.json());
+// Initialize the app
+const app = express();
+const port = process.env.PORT || 3001; // Use environment variable or default to 3001
+
+// Enable CORS (restrict to specific origins in production)
+const corsOptions = {
+    origin: process.env.ALLOWED_ORIGIN || "http://localhost:5173", // Replace with your frontend's URL
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+};
+app.use(cors(corsOptions));
+app.use(express.json()); // Enable JSON body parsing
+
 
 // Create a connection to the database
 const db = mysql.createConnection({

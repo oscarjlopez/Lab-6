@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import Home from './pages/Home';
-import EmployeeManagement from './pages/EmployeeManagement';
+import EmployeeManagement from './Pages/EmployeeManagement';
 
 export default function App() {
     useEffect(() => {
